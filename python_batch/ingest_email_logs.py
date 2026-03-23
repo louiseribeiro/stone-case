@@ -35,7 +35,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-REQUIRED_COLUMNS = {"log_id", "user_email", "event_type", "event_timestamp", "message_details"}
+REQUIRED_COLUMNS = {"event_id", "user_email", "event_type", "event_timestamp", "message_details"}
+
 
 #Campos obrigatórios dentro do JSON de message_details
 REQUIRED_JSON_FIELDS = {"campaign_code"}
@@ -287,7 +288,7 @@ def ingest_email_logs(
 
         if not df_quarantine.empty:
             print("\n[DRY RUN] Linhas REJEITADAS (quarentena):")
-            print(df_quarantine[["log_id", "user_email", "_error_reason"]].to_string())
+            print(df_quarantine[["event_id", "user_email", "_error_reason"]].to_string())
 
     # Resultado final
     execution_time_s = (datetime.now(timezone.utc) - execution_start).total_seconds()

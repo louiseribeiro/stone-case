@@ -28,7 +28,8 @@
 
 CREATE OR REPLACE TABLE `stone-project-491000.gold.fct_attribution`
 PARTITION BY conversion_date
-CLUSTER BY attributed_campaign, attributed_channel AS
+CLUSTER BY attributed_campaign, attributed_channel
+AS
 
 WITH
 
