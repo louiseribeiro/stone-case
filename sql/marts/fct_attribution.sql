@@ -60,12 +60,12 @@ unified_interactions AS (
   SELECT
     u.user_id,
     w.event_type,
-    CAST(w.event_ts_brt AS DATE)              AS interaction_date,
-    w.event_ts_brt                            AS interaction_ts,
+    CAST(w.event_ts_brt AS DATE) AS interaction_date,
+    w.event_ts_brt AS interaction_ts,
     w.campaign_code,
     w.interaction_weight,
     w.channel,
-    w.source_id                               AS raw_log_id
+    w.source_id AS raw_log_id
 
   FROM `stone-project-491000.silver.stg_whatsapp_logs_valid` w
   INNER JOIN `stone-project-491000.silver.stg_crm_users`  u
