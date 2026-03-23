@@ -12,7 +12,7 @@ from ingest_email_logs import validate_json_field, validate_dataframe
 
 def make_row(message_details) -> pd.Series:
     return pd.Series({
-        "log_id": "E001",
+        "event_id": "E001",
         "user_email": "test@example.com",
         "event_type": "open",
         "event_timestamp": "2024-01-15 08:30:00",
@@ -74,10 +74,10 @@ class TestValidateDataframe:
 
     def test_all_valid(self):
         df = self.make_df([
-            {"log_id": "E001", "user_email": "a@b.com", "event_type": "open",
+            {"event_id": "E001", "user_email": "a@b.com", "event_type": "open",
              "event_timestamp": "2024-01-15 08:00:00",
              "message_details": '{"campaign_code": "CAMP_A"}'},
-            {"log_id": "E002", "user_email": "c@d.com", "event_type": "click",
+            {"event_id": "E002", "user_email": "c@d.com", "event_type": "click",
              "event_timestamp": "2024-01-15 09:00:00",
              "message_details": '{"campaign_code": "CAMP_B", "v": 1}'},
         ])
@@ -88,21 +88,21 @@ class TestValidateDataframe:
 
     def test_mixed_valid_invalid(self):
         df = self.make_df([
-            {"log_id": "E001", "user_email": "a@b.com", "event_type": "open",
+            {"event_id": "E001", "user_email": "a@b.com", "event_type": "open",
              "event_timestamp": "2024-01-15 08:00:00",
              "message_details": '{"campaign_code": "CAMP_A"}'},
-            {"log_id": "E002", "user_email": "x@y.com", "event_type": "open",
+            {"event_id": "E002", "user_email": "x@y.com", "event_type": "open",
              "event_timestamp": "2024-01-15 09:00:00",
              "message_details": "BROKEN JSON {{{}"},
         ])
         df_valid, df_quarantine, stats = validate_dataframe(df)
         assert len(df_valid) == 1
         assert len(df_quarantine) == 1
-        assert df_quarantine.iloc[0]["log_id"] == "E002"
+        assert df_quarantine.iloc[0]["event_id"] == "E002"
         assert "JSONDecodeError" in df_quarantine.iloc[0]["_error_reason"]
 
     def test_missing_required_column_raises(self):
-        df = pd.DataFrame([{"log_id": "E001", "user_email": "a@b.com"}])
+        df = pd.DataFrame([{"event_id": "E001", "user_email": "a@b.com"}])
         with pytest.raises(ValueError, match="colunas obrigatórias"):
             validate_dataframe(df)
 
@@ -110,13 +110,13 @@ class TestValidateDataframe:
         rows = []
         for i in range(8):
             rows.append({
-                "log_id": f"E{i:03d}", "user_email": f"u{i}@x.com",
+                "event_id": f"E{i:03d}", "user_email": f"u{i}@x.com",
                 "event_type": "open", "event_timestamp": "2024-01-15 08:00:00",
                 "message_details": '{"campaign_code": "CAMP_OK"}'
             })
         for i in range(8, 10):
             rows.append({
-                "log_id": f"E{i:03d}", "user_email": f"u{i}@x.com",
+                "event_id": f"E{i:03d}", "user_email": f"u{i}@x.com",
                 "event_type": "open", "event_timestamp": "2024-01-15 08:00:00",
                 "message_details": None
             })
