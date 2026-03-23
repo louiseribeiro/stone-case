@@ -288,7 +288,7 @@ def ingest_email_logs(
 
         if not df_quarantine.empty:
             print("\n[DRY RUN] Linhas REJEITADAS (quarentena):")
-            print(df_quarantine[["log_id", "user_email", "_error_reason"]].to_string())
+            print(df_quarantine[["event_id", "user_email", "_error_reason"]].to_string())
 
     # Resultado final
     execution_time_s = (datetime.now(timezone.utc) - execution_start).total_seconds()
