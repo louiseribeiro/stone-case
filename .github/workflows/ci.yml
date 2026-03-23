@@ -24,11 +24,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Rodar testes unitários
-        run: pytest python/test_ingest_email_logs.py -v
+        run: pytest python_batch/test_ingest_email_logs.py -v
 
       - name: Rodar dry-run do script de ingestão
         run: |
-          python python/ingest_email_logs.py \
+          python python_batch/ingest_email_logs.py \
             --source-file data/raw_sfmc_email_logs.csv \
             --project-id fake-project \
             --dry-run
