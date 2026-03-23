@@ -6,7 +6,7 @@ Execute com: pytest test_ingest_email_logs.py -v
 import json
 import pytest
 import pandas as pd
-from ingest_email_logs import validate_json_field, validate_dataframe
+from python_batch.test_ingest_email_logs import validate_json_field, validate_dataframe
 
 # Fixtures
 
