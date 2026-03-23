@@ -1,3 +1,47 @@
+# Roda ao mergear um PR na main
+# Objetivo: aplicar as mudanças de SQL no BigQuery automaticamente
 
-#O workflow de CD foi configurado para rodar via Service Account Key. 
-#Em ambientes com restrição de iam.disableServiceAccountKeyCreation, a autenticação deve ser feita via Workload Identity Federation.
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-sql:
+    runs-on: ubuntu-latest
+
+    # Credenciais do GCP ficam em GitHub Secrets — nunca no código
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Autenticar no GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Rodar stagings no BigQuery
+        run: |
+          bq query --use_legacy_sql=false \
+            --project_id=$GCP_PROJECT_ID \
+            < sql/staging/stg_crm_users.sql
+
+          bq query --use_legacy_sql=false \
+            --project_id=$GCP_PROJECT_ID \
+            < sql/staging/stg_email_logs.sql
+
+          bq query --use_legacy_sql=false \
+            --project_id=$GCP_PROJECT_ID \
+            < sql/staging/stg_whatsapp_logs.sql
+
+      - name: Rodar tabela de atribuição
+        run: |
+          bq query --use_legacy_sql=false \
+            --project_id=$GCP_PROJECT_ID \
+            < sql/marts/fct_attribution.sql

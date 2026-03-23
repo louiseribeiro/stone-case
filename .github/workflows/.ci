@@ -2,6 +2,7 @@
 # Objetivo: garantir que nenhum PR quebra os testes ou a qualidade do código
 
 name: CI
+
 on:
   pull_request:
     branches: [main]
