@@ -35,7 +35,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-REQUIRED_COLUMNS = {"log_id", "user_email", "event_type", "event_timestamp", "message_details"}
+REQUIRED_COLUMNS = {"event_id", "user_email", "event_type", "event_timestamp", "message_details"}
+
 
 #Campos obrigatórios dentro do JSON de message_details
 REQUIRED_JSON_FIELDS = {"campaign_code"}
