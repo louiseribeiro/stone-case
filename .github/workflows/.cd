@@ -1,0 +1,3 @@
+
+#O workflow de CD foi configurado para rodar via Service Account Key. 
+#Em ambientes com restrição de iam.disableServiceAccountKeyCreation, a autenticação deve ser feita via Workload Identity Federation.

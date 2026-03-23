@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Credenciais — NUNCA subir para o repositório
+*.json
+service-account*.json
+gcp-key*.json
+
+# IDEs
+.vscode/
+.idea/
