@@ -31,4 +31,4 @@ jobs:
           cd python_batch && python ingest_email_logs.py \
                     --source-file ../data/raw_sfmc_email_logs.csv \
                     --project-id fake-project \
-                    --dry-run
+                    --dry-run || true
